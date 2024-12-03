@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Bokskuhh</title>
+    <link href="../../output.css" rel="stylesheet">
+    <script src="../../main.js" defer></script>
+
+
+      <!-- Load CDN only if 'loadThreeJS' is true -->
+    {{#if loadThreeJS}}
+        <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+          }
+        }
+    </script>
+    {{/if}}
+</head>
+<body class="bg-white font-sans text-gray-900 flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">Backend Bokskuhh</h1>
+            <nav>
+                <ul class="flex space-x-6 items-center">
+                    <li><a href="/" class="hover:text-blue-200">Home</a></li>
+                    {{#if user}}
+                        <li><a href="/profile" class="hover:text-blue-200">Profile</a></li>
+                        <li><a href="/logout" class="hover:text-blue-200">Logout</a></li>
+                    {{else}}
+                        <li><a href="/login" class="hover:text-blue-200">Login</a></li>
+                    {{/if}}
+                    <li><a href="" target="_blank" class="hover:text-blue-200">Github</a></li>
+                    <li><button class="px-4 py-2 bg-white rounded-md text-blue-600" id="openModalBtn" >Alert Test</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 py-8">
+            <!-- Modal -->
+            <div id="myModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden justify-center items-center top-0 left-0 translate-x-0">
+                <div class="bg-white rounded-lg p-5 w-96 relative" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <button id="closeModalBtn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 p-2 rounded-full">
+                    &times;
+                </button>
+                <h3 class="text-[2rem] font-black">OMG MARCILLE</h3>
+                <img id="modalImage" src="" alt="Modal Image" class="w-full h-auto rounded-lg">
+                <button id="closeModalBtn2" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
+                    Close Modal
+                </button>
+                </div>
+            </div>
+
+
+            {{{body}}} <!-- Konten dinamis disini -->
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Backend Bokskuhh. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

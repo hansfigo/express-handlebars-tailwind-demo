@@ -1,0 +1,131 @@
+<h1 class="text-3xl font-bold text-center">Welcome Demo Handlebar Express Tailwind, Backend Niii</h1>
+
+ <div id="loading-overlay" class="absolute inset-0 bg-black bg-opacity-50  justify-center items-center ">
+    <div class="text-white font-bold text-xl">Loading 3D Model...</div>
+</div>
+
+<div id="three-container" class="mt-4"></div> <!-- Canvas untuk 3D model -->
+
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+  // Scene setup
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  // Renderer setup
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xffffff, 1); 
+  document.getElementById('three-container').appendChild(renderer.domElement);
+
+  // Add light to the scene
+  const light = new THREE.AmbientLight(0x404040, 1);  
+  scene.add(light);
+
+  // Show loading overlay
+  function showLoadingOverlay() {
+      document.getElementById('loading-overlay').classList.remove('opacity-0');
+  }
+
+  // Hide loading overlay
+  function hideLoadingOverlay() {
+      document.getElementById('loading-overlay').classList.add('opacity-0');
+  }
+
+  // GLTFLoader to load 3D model
+  const loader = new GLTFLoader();
+  let mixer; // Animation mixer
+
+
+  loader.load('https://firebasestorage.googleapis.com/v0/b/d-web-39027.appspot.com/o/models%2Fmadoka.glb?alt=media&token=733d5903-bf59-4083-ac05-f4e516cfa685', function (gltf) {
+      const model = gltf.scene;
+      scene.add(model);
+      model.scale.set(1, 1, 1);  // Set model scale
+      model.position.set(0, -1, 0);  // Set model position
+
+      // Log animations if any
+      if (gltf.animations && gltf.animations.length) {
+          console.log("Animations available:", gltf.animations);
+          // Create an AnimationMixer for the loaded model
+          mixer = new THREE.AnimationMixer(model);
+          gltf.animations.forEach((clip) => {
+              mixer.clipAction(clip).play();  // Play each animation
+          });
+      } else {
+          console.log("No animations found in the model.");
+      }
+
+      hideLoadingOverlay(); 
+      animate();
+  }, undefined, function (error) {
+      console.error(error);
+      hideLoadingOverlay();
+  });
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+
+  function animate() {
+      requestAnimationFrame(animate);
+
+      // Update animation mixer if it's defined
+      if (mixer) {
+          mixer.update(0.01);
+      }
+      renderer.render(scene, camera);
+  }
+
+  camera.position.z = 1;
+
+  // Handle resizing of window
+  window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+  })
+</script>
+
+
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  /* Style untuk header dan footer (misalnya, jika ada tinggi tetap) */
+  header {
+    height: 100px; /* Ganti dengan tinggi header yang sesuai */
+    background-color: #f8f8f8;
+  }
+
+  footer {
+    height: 50px; /* Ganti dengan tinggi footer yang sesuai */
+    background-color: #f8f8f8;
+  }
+
+  #three-container {
+    position: 100%;
+    width: 100%;
+    height: calc(100vh - 150px); /* Adjust based on header/footer height */
+}
+
+#loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+</style>

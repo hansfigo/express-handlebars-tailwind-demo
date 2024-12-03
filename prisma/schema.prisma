@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model drizzle_migrations {
+  id         BigInt  @id @unique(map: "id") @default(autoincrement()) @db.UnsignedBigInt
+  hash       String  @db.Text
+  created_at BigInt?
+
+  @@map("__drizzle_migrations")
+}
+
+model transaction_items {
+  id             BigInt                      @id @default(autoincrement())
+  transaction_id BigInt
+  item_name      String                      @db.Text
+  category       transaction_items_category? @default(others)
+  price          Decimal                     @db.Decimal(10, 0)
+  quantity       Int
+  subtotal       Decimal                     @db.Decimal(10, 0)
+  created_at     DateTime?                   @db.Timestamp(0)
+  updated_at     DateTime?                   @db.Timestamp(0)
+  transactions   transactions                @relation(fields: [transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transaction_items_transaction_id_transactions_id_fk")
+
+  @@index([transaction_id], map: "transaction_items_transaction_id_transactions_id_fk")
+}
+
+model transactions {
+  id                BigInt                 @id @default(autoincrement())
+  user_id           BigInt
+  type              Int                    @default(0)
+  amount            Decimal                @default(0) @db.Decimal(10, 0)
+  description       String?                @db.Text
+  created_at        DateTime?              @db.Timestamp(0)
+  updated_at        DateTime?              @db.Timestamp(0)
+  name              String                 @default("Transaction") @db.VarChar(255)
+  category          transactions_category? @default(others)
+  transaction_items transaction_items[]
+  users             users                  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_user_id_users_id_fk")
+
+  @@index([user_id], map: "transactions_user_id_users_id_fk")
+}
+
+model user_financial_profile {
+  id              BigInt                                  @id @default(autoincrement())
+  user_id         BigInt
+  monthly_income  Decimal?                                @db.Decimal(16, 2)
+  current_savings Decimal?                                @db.Decimal(16, 2)
+  debt            Decimal?                                @db.Decimal(16, 2)
+  financial_goals String?                                 @db.Text
+  risk_management user_financial_profile_risk_management?
+  users           users                                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_financial_profile_user_id_users_id_fk")
+
+  @@index([user_id], map: "user_financial_profile_user_id_users_id_fk")
+}
+
+model users {
+  id                     BigInt                   @id @unique(map: "id") @default(autoincrement())
+  username               String                   @db.VarChar(255)
+  email                  String                   @unique(map: "users_email_unique") @db.VarChar(255)
+  password               String                   @db.VarChar(255)
+  role                   Int                      @default(0)
+  profile_picture        String?                  @db.VarChar(256)
+  created_at             DateTime?                @db.Timestamp(0)
+  updated_at             DateTime?                @db.Timestamp(0)
+  age                    Int                      @default(17)
+  balance                Decimal                  @default(0.00) @db.Decimal(16, 2)
+  full_name              String                   @db.VarChar(255)
+  transactions           transactions[]
+  user_financial_profile user_financial_profile[]
+}
+
+enum transaction_items_category {
+  food
+  transportation
+  utilities
+  entertainment
+  shopping
+  healthcare
+  education
+  others
+}
+
+enum user_financial_profile_risk_management {
+  low
+  medium
+  high
+}
+
+enum transactions_category {
+  food
+  transportation
+  utilities
+  entertainment
+  shopping
+  healthcare
+  education
+  others
+}

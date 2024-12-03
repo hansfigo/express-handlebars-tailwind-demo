@@ -1,0 +1,36 @@
+{{#if message}}
+<div class="flex w-full justify-center items-center">
+    <div class="container">
+    <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
+            {{message}}
+        </div>
+    </div>
+</div>
+{{/if}}
+{{#if user}}
+  <div class="flex justify-center items-center flex-col space-y-4">
+    <img
+      class="w-[20rem] h-[20rem] rounded-full border-4 border-blue-500 shadow-lg object-cover"
+      src="{{user.profile_picture}}"
+      alt="Profile Picture"
+    />
+    <div>
+      <h3 class="text-4xl font-semibold">{{user.full_name}}</h3>
+    </div>
+
+    {{!-- Logout --}}
+    <form action="/auth/logout" method="POST">
+      <button
+        type="submit"
+        class="px-6 py-2 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition duration-300"
+      >Logout</button>
+  </div>
+{{else}}
+  <div class="flex justify-center items-center flex-col space-y-4">
+    <h3 class="text-lg text-gray-500">Not logged in</h3>
+    <a
+      href="/login"
+      class="px-6 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300"
+    >Login</a>
+  </div>
+{{/if}}
