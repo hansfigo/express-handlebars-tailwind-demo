@@ -2,16 +2,22 @@
 
 ini gambaran implementasi Silabus BE AMCC 2024
 
-<div align="center">
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://img1.picmix.com/output/pic/normal/2/3/1/0/11750132_00f1b.gif">
-    <img alt="Taipy" src="https://c.tenor.com/oifgBY6atjsAAAAC/tenor.gif" width="600" />
-  </picture>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://media.tenor.com/ZxoQaz0VvQIAAAAM/marcille-best-girl-failure.gif">
-    <img alt="Taipy" src="https://c.tenor.com/oifgBY6atjsAAAAC/tenor.gif" width="600" />
-  </picture>
-</div>
+<table>
+  <tr>
+    <td>
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://img1.picmix.com/output/pic/normal/2/3/1/0/11750132_00f1b.gif">
+        <img alt="GIF 1" src="https://c.tenor.com/oifgBY6atjsAAAAC/tenor.gif" width="200" />
+      </picture>
+    </td>
+    <td>
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://media.tenor.com/ZxoQaz0VvQIAAAAM/marcille-best-girl-failure.gif">
+        <img alt="GIF 2" src="https://c.tenor.com/oifgBY6atjsAAAAC/tenor.gif" width="200" />
+      </picture>
+    </td>
+  </tr>
+</table>
 
 ### How to run
 
